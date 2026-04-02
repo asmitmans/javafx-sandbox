@@ -8,7 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -16,61 +15,51 @@ public class TicTacToeApplication extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-
         BorderPane layout = new BorderPane();
 
-        HBox menu = new HBox();
-        
+        // Turn label
         Label turnLabel = new Label("Turn: X");
         turnLabel.setFont(Font.font("Monospaced", 40));
-        menu.getChildren().addAll(turnLabel);
-        layout.setTop(menu);
+        layout.setTop(turnLabel);
 
-        GridPane main = new GridPane();
+        // Board with GridPane
+        GridPane board = new GridPane();
+        board.setHgap(10);
+        board.setVgap(10);
+        board.setPadding(new Insets(10, 10, 20, 10));  
+        board.setAlignment(Pos.CENTER);
 
-        Button btn00 = new Button();
-        btn00.setFont(Font.font("Monospaced", 40));
-        Button btn10 = new Button();
-        btn10.setFont(Font.font("Monospaced", 40));
-        Button btn20 = new Button();
-        btn20.setFont(Font.font("Monospaced", 40));
+        // Buttons dinamic creation
+        for (int row = 0; row < 3; row++) {
+            int r = row;
+            for (int col = 0; col < 3; col++) {
+                int c = col;
 
-        Button btn01 = new Button();
-        btn01.setFont(Font.font("Monospaced", 40));
-        Button btn11 = new Button();
-        btn11.setFont(Font.font("Monospaced", 40));
-        Button btn21 = new Button();
-        btn21.setFont(Font.font("Monospaced", 40));
+                Button btn = createBoardButton();
 
-        Button btn02 = new Button();
-        btn02.setFont(Font.font("Monospaced", 40));
-        Button btn12 = new Button();
-        btn12.setFont(Font.font("Monospaced", 40));
-        Button btn22 = new Button();
-        btn22.setFont(Font.font("Monospaced", 40));
+                btn.setOnAction((event) -> BoardButtonClickHandler(r, c));
 
-        main.add(btn00, 0, 0);
-        main.add(btn10, 1, 0);
-        main.add(btn20, 2, 0);
+                board.add(btn, col, row);
+            }
+        }
 
-        main.add(btn01, 0, 1);
-        main.add(btn11, 1, 1);
-        main.add(btn21, 2, 1);
+        layout.setCenter(board);
 
-        main.add(btn02, 0, 2);
-        main.add(btn12, 1, 2);
-        main.add(btn22, 2, 2);
-
-        main.setVgap(10);
-        main.setHgap(10);
-        
-
-        layout.setCenter(main);
-
-        Scene view = new Scene(layout, 280,320);
+        Scene view = new Scene(layout, 300, 380);
         stage.setScene(view);
-        stage.show();                
-        
+        stage.setTitle("Tic Tac Toe");
+        stage.show();
+    }
+
+    private Button createBoardButton() {
+        Button btn = new Button("");
+        btn.setFont(Font.font("Monospaced", 49));
+        btn.setPrefSize(80, 80);
+        return btn;
+    }
+
+    private void BoardButtonClickHandler(int row, int col) {
+        System.out.println("Se presiono el btn en la fila: " + row + " col: " + col);
     }
 
     public static void main(String[] args) {
